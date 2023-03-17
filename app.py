@@ -9,8 +9,8 @@ def index():
     return render_template("index.html")
 
 @app.route("/basic")
-def open():
-     with open('data/Kaggle_TwitterUSAirlineSentiment.csv', encoding='utf-8-sig') as csv_file:
+def display_data():
+     with open('data/Kaggle_TwitterUSAirlineSentiment.csv', encoding='utf-8') as csv_file:
         data = csv.reader(csv_file, delimiter=",")
         first_line = True
         tweetData = []
