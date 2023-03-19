@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from operator import itemgetter
 import csv
 import itertools
 
@@ -15,8 +16,9 @@ def display_data():
         first_line = True
         tweetData = []
 
-        for row in itertools.islice(data, 51):
+        for row in itertools.islice(data, 41):
             if not first_line:
+                sorted_list = sorted(tweetData, key=lambda d: d['airline_sentiment_confidence'])
                 tweetData.append({
                     "id": row[0],
                     "airline_sentiment": row[1],
@@ -25,9 +27,9 @@ def display_data():
                     "airline": row[4],
                     "name": row[5],
                     "text": row[6],
-                    "tweet_created": row[7],
-                    "tweet_location": row[8]
+                    "tweet_created": row[7]
                 })
+                print(sorted_list)
             else:
                 first_line = False
         return render_template("basic.html", tweetData=tweetData)
