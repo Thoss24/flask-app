@@ -11,14 +11,13 @@ def index():
 
 @app.route("/basic")
 def display_data():
-     with open('data/Kaggle_TwitterUSAirlineSentiment.csv', encoding='utf-8') as csv_file:
+     with open('static/data/Kaggle_TwitterUSAirlineSentiment.csv', encoding='utf-8') as csv_file:
         data = csv.reader(csv_file, delimiter=",")
         first_line = True
         tweetData = []
 
         for row in itertools.islice(data, 41):
             if not first_line:
-                sorted_list = sorted(tweetData, key=lambda d: d['airline_sentiment_confidence'])
                 tweetData.append({
                     "id": row[0],
                     "airline_sentiment": row[1],
@@ -29,7 +28,6 @@ def display_data():
                     "text": row[6],
                     "tweet_created": row[7]
                 })
-                print(sorted_list)
             else:
                 first_line = False
         return render_template("basic.html", tweetData=tweetData)
@@ -42,3 +40,5 @@ def advanced():
 @app.route("/creative")
 def creative():
     return render_template("creative.html")
+
+app.run(host='0.0.0.0', port=81)
