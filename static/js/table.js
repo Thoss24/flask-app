@@ -1,7 +1,7 @@
 d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", function(error, data) {
-    // if (error) throw error;
+    if (error) throw error;
 
-    var sortAscending = true;
+    let sortAscending = true;
     var table = d3.select('#page-wrap').append('table');
     var titles = d3.keys(data[0]);
     var headers = table.append('thead').append('tr').selectAll('th').data(titles)
@@ -12,16 +12,14 @@ d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", function(error, data
                 headers.attr('class', 'header');
 
             if (sortAscending) {
-                rows.sort(function (a, b) {
-                    return b[d] < a[d];
-                });
+                rows.sort(function(a, b) { return b[d] < a[d]; });
                 sortAscending = false;
+                console.log(sortAscending)
                 this.className = 'aes';
             } else {
-                rows.sort(function (a, b) {
-                    return b[d] > a[d];
-                });
+                rows.sort(function(a, b) { return b[d] > a[d]; });
                 sortAscending = true;
+                console.log(sortAscending)
                 this.className = 'des'
             }
             });
