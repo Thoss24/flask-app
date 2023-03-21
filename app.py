@@ -28,6 +28,7 @@ def display_data():
                     "text": row[6],
                     "tweet_created": row[7]
                 })
+                print(tweetData)
             else:
                 first_line = False
         return render_template("basic.html", tweetData=tweetData)

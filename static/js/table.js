@@ -12,19 +12,17 @@ d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", function(error, data
                 headers.attr('class', 'header');
 
             if (sortAscending) {
-                rows.sort(function(a, b) { return b[d] < a[d]; });
+                rows.sort((a, b) => d3.descending(b[d], a[d]));
                 sortAscending = false;
-                console.log(sortAscending)
                 this.className = 'aes';
             } else {
-                rows.sort(function(a, b) { return b[d] > a[d]; });
+                rows.sort((a, b) => d3.ascending(b[d], a[d]));
                 sortAscending = true;
-                console.log(sortAscending)
                 this.className = 'des'
             }
             });
 
-    var rows = table.append('tbody').selectAll('tr').data(data).enter().append('tr');
+    let rows = table.append('tbody').selectAll('tr').data(data).enter().append('tr');
             
     rows.selectAll('td').data(function (d) {
         return titles.map(function (k) {
