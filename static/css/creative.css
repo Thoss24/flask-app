@@ -3,12 +3,13 @@
     padding: 0;
 }
 
-#svg-display {
-    background-color: green;
-    width: 500;
-    height: 600;
+#chart-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-.bar {
-    fill: steelblue;
+#chart {
+    margin: 10px;
 }
