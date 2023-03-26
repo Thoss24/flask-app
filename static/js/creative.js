@@ -1,4 +1,4 @@
-d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", (error, data) => {
+d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", function(error, data) {
     if (error) throw error;
   
     let american = {
@@ -90,94 +90,46 @@ d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", (error, data) => {
 
     }
 
-    console.log(american, delta, southwest, usAirways, united, virginAmerica)
+    let americanData = Object.keys(american).map((d) => {return {name: d, value: american[d]}});
+    let deltaData = Object.keys(delta).map((d) => {return {name: d, value: delta[d]}});
+    let southwestData = Object.keys(southwest).map((d) => {return {name: d, value: southwest[d]}});
+    let usAirwaysData = Object.keys(usAirways).map((d) => {return {name: d, value: usAirways[d]}});
+    let unitedData = Object.keys(united).map((d) => {return {name: d, value: united[d]}});
+    let virginAmericaData = Object.keys(virginAmerica).map((d) => {return {name: d, value: virginAmerica[d]}})
+    console.log(americanData, deltaData, southwestData, usAirwaysData, unitedData, virginAmericaData)
 
-    // USE AIRLINE OBJECTS TO CREATE INDIVIDUAL PIE CHARTS FOR EACH 
+    var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var width = 360;
-var height = 360;
-var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c"]);
 
-var color = d3.scale.category20b();
+    var pie = d3.pie()
+      .sort(null)
+      .value(function(d) { return d.value; });
 
-var svg = d3.select('#chart')
-  .append('svg')
-  .attr('width', width)
-  .attr('height', height)
-  .append('g')
-  .attr('transform', 'translate(' + (width / 2) +
-    ',' + (height / 2) + ')');
+    var path = d3.arc()
+      .outerRadius(radius - 10)
+      .innerRadius(0);
 
-var arc = d3.svg.arc()
-  .outerRadius(radius);
+    var label = d3.arc()
+      .outerRadius(radius - 40)
+      .innerRadius(radius - 40);
 
-var pie = d3.layout.pie()
-  .value(function(d) {
-    return d.Value;
-  })
-  .sort(null);
+    var arc = g.selectAll(".arc")
+      .data( pie(deltaData))
+      .enter().append("g")
+        .attr("class", "arc");
 
-var dataset = {
-  "data": [{
-    "_id": {
-      "$oid": "56afcea3243c48393e5b665f"
-    },
-    "idDatasource": {
-      "$oid": "56afce8f243c48393e5b665a"
-    },
-    "Id": 5,
-    "Value": 10,
-    "Name": "Brock"
-  }, {
-    "_id": {
-      "$oid": "56afcea3243c48393e5b665d"
-    },
-    "idDatasource": {
-      "$oid": "56afce8f243c48393e5b665a"
-    },
-    "Id": 3,
-    "Value": 5,
-    "Name": "Peter"
-  }, {
-    "_id": {
-      "$oid": "56afcea3243c48393e5b665e"
-    },
-    "idDatasource": {
-      "$oid": "56afce8f243c48393e5b665a"
-    },
-    "Id": 4,
-    "Value": 8,
-    "Name": "John"
-  }, {
-    "_id": {
-      "$oid": "56afcea3243c48393e5b665b"
-    },
-    "idDatasource": {
-      "$oid": "56afce8f243c48393e5b665a"
-    },
-    "Id": 1,
-    "Value": 8,
-    "Name": "Ash"
-  }, {
-    "_id": {
-      "$oid": "56afcea3243c48393e5b665c"
-    },
-    "idDatasource": {
-      "$oid": "56afce8f243c48393e5b665a"
-    },
-    "Id": 2,
-    "Value": 20,
-    "Name": "Sarah"
-  }]
-};
+    arc.append("path")
+        .attr("d", path)
+        .attr("fill", function(d) { return color(d.deltaData.name); });
 
-var path = svg.selectAll('path')
-  .data(pie(dataset.data)) 
-  .enter()
-  .append('path')
-  .attr('d', arc)
-  .attr('fill', function(d, i) {
-    return color(d.data.Name);
-  });
+    arc.append("text")
+        .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+        .attr("dy", "0.35em")
+        .text(function(d) { return d.deltaData.name; });
 
 });
