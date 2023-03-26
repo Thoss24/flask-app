@@ -119,17 +119,17 @@ d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", function(error, data
       .innerRadius(radius - 40);
 
     var arc = g.selectAll(".arc")
-      .data( pie(deltaData))
+      .data( pie(americanData))
       .enter().append("g")
         .attr("class", "arc");
 
     arc.append("path")
         .attr("d", path)
-        .attr("fill", function(d) { return color(d.deltaData.name); });
+        .attr("fill", function(d) { return color(d.data.name) });
 
     arc.append("text")
         .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
         .attr("dy", "0.35em")
-        .text(function(d) { return d.deltaData.name; });
+        .text(function(d) { return d.data.name });
 
 });
