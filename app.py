@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from operator import itemgetter
 import csv
 import itertools
+import unittest
 import pandas as pandasForSortingCSV
 
 app = Flask(__name__)
@@ -43,5 +44,23 @@ def advanced():
 @app.route("/creative")
 def creative():
     return render_template("creative.html")
+
+def testing(array):
+    n = len(array)
+
+    for i in range(n):
+        already_sorted = True
+
+        for j in range(n - i - 1):
+            if array[j] > array[j + 1]:
+                array[j], array[j + 1] = array[j + 1], array[j]
+                already_sorted = False
+
+        if already_sorted:
+            break
+
+    return array
+
+
 
 app.run(host='0.0.0.0', port=81)
