@@ -314,3 +314,4 @@ d3.csv("/static/data/Kaggle_TwitterUSAirlineSentiment.csv", function(error, data
         .text(function(d) { return d.data.name });
 
 });
+
